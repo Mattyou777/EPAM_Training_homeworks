@@ -1,4 +1,4 @@
-package com.epam.training.printArray;
+package com.epam.training.PrintArray;
 
 import java.util.ArrayList;
 
