@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Matt on 08.02.2018.
  */
-public class printArray {
+public class PrintArray {
     //prints from the top left corner clockwise
     public static void print(int [][] arr){
         int mini=0;
