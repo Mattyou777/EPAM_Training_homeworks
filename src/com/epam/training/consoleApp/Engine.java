@@ -27,6 +27,7 @@ class Engine {
                 System.out.println("На данный момент доступны команды:");
                 System.out.println("exit - выход");
                 System.out.println("copy (полное имя файла) (директория назначения) - копирование файла");
+                System.out.println("show (полное имя директории) (ключ) - список файлов в директории");
                 System.out.println("rename (полное имя файла) (новое имя файла) - переименование");
                 System.out.println("delete (полное имя файла) - удаление");
                 System.out.println("zip (полное имя файла/директории) (директория назначения\\название архива[опционально]) - архивирование файла");
@@ -84,6 +85,22 @@ class Engine {
                     continue;
                 }
                 Delete.start(source);
+            }
+            else if(sc.hasNext("show")){
+                sc.next();
+                String source = "";
+                String key = "";
+                if (sc.hasNext()){
+                    source = sc.next();
+                }
+                else {
+                    System.out.println("Нет аргументов!");
+                    continue;
+                }
+                if (sc.hasNext()){
+                    key = sc.next();
+                }
+                Show.start(source, key);
             }
             else if(sc.hasNext("zip")){
                 sc.next();
