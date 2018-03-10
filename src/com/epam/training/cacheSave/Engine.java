@@ -9,52 +9,52 @@ import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 
-import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /**
  * Created by Matt on 17.02.2018.
  */
 public class Engine {
-    private static String getSourcePath(){
+    private static String getSourcePath() {
         StringBuilder cachePath = new StringBuilder();
         Scanner sc = new Scanner(System.in);
         String os = "";
-        if(System.getProperty("os.name").toLowerCase().indexOf("win")>=0){
+        private static final int MIN_VIDEO_SIZE = 250000;
+        private static final int MIN_AUDIO_SIZE = 20000;
+        if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
             cachePath.append("C:\\Users\\");
-            os="win";
-        }
-        else if(System.getProperty("os.name").toLowerCase().indexOf("nix")>=0 || System.getProperty("os.name").toLowerCase().indexOf("nux")>=0){
+            os = "win";
+        } else if (System.getProperty("os.name").toLowerCase().indexOf("nix") >= 0 || System.getProperty("os.name").toLowerCase().indexOf("nux") >= 0) {
             cachePath.append("/home/");
-            os="lin";
+            os = "lin";
 
-        }
-        else if(System.getProperty("os.name").toLowerCase().indexOf("mac")>=0){
+        } else if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
             cachePath.append("Users/");
-            os="mac";
+            os = "mac";
 
-        }
-        else {
+        } else {
             System.out.println("Укажите папку с кэшем");
             cachePath.append(sc.next());
         }
-        if(os.length()>0) {
+        if (os.length() > 0) {
             cachePath.append(System.getProperty("user.name"));
             System.out.println("Выбирите браузер: 1)Google chrome(only old versions) 2)Firefox 3)Другой");
             switch (sc.nextInt()) {
-                case 1: if(os.equals("win"))
-                    cachePath.append("\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache");
-                else if(os.equals("lin"))
-                    cachePath.append("/.config/google-chrome/default/cache");
-                else
-                    cachePath.append("/Library/Application Support/Google/Chrome/Default/Cache");
+                case 1:
+                    if (os.equals("win"))
+                        cachePath.append("\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Cache");
+                    else if (os.equals("lin"))
+                        cachePath.append("/.config/google-chrome/default/cache");
+                    else
+                        cachePath.append("/Library/Application Support/Google/Chrome/Default/Cache");
                     break;
                 case 2:
-                    if(os.equals("win")) {
+                    if (os.equals("win")) {
                         File path = new File(cachePath.append("\\AppData\\Local\\Mozilla\\Firefox\\Profiles\\").toString());
                         File[] paths = path.listFiles();
                         Pattern p = Pattern.compile(".+\\.default");
@@ -66,8 +66,7 @@ public class Engine {
                             }
                         }
                         break;
-                    }
-                    else if(os.equals("lin")){
+                    } else if (os.equals("lin")) {
                         File path = new File(cachePath.append("/.cache/mozilla/firefox/").toString());
                         File[] paths = path.listFiles();
                         Pattern p = Pattern.compile(".+\\.default");
@@ -78,8 +77,7 @@ public class Engine {
                                 break;
                             }
                         }
-                    }
-                    else{
+                    } else {
                         File path = new File(cachePath.append("/Library/Application Support/Firefox/Profiles/").toString());
                         File[] paths = path.listFiles();
                         Pattern p = Pattern.compile(".+\\.default");
@@ -93,7 +91,7 @@ public class Engine {
                     }
                 default:
                     System.out.println("Укажите папку с кэшем");
-                    cachePath.delete(0,cachePath.length());
+                    cachePath.delete(0, cachePath.length());
                     cachePath.append(sc.next());
                     break;
             }
@@ -132,29 +130,27 @@ public class Engine {
         String source = getSourcePath();
         String dest = getDestPath();
         if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-            dest+="\\Video\\";
-        }
-        else
-            dest+="/video/";
+            dest += "\\Video\\";
+        } else
+            dest += "/video/";
         File pathDest = new File(dest);
         if (!pathDest.exists()) {
             pathDest.mkdir();
         }
         File pathSource = new File(source);
         LinkedList<File> files = new LinkedList<File>();
-        for (File file : pathSource.listFiles()){
-            if (file.length()>250000)
+        for (File file : pathSource.listFiles()) {
+            if (file.length() > MIN_VIDEO_SIZE)
                 files.add(file);
         }
-        for(File file : files){
+        for (File file : files) {
             try {
                 BufferedReader fin = new BufferedReader(new FileReader(file));
-                if (fin.readLine().contains("mp4")){
-                    File newFile = new File(dest + file.getName()+".mp4");
+                if (fin.readLine().contains("mp4")) {
+                    File newFile = new File(dest + file.getName() + ".mp4");
                     Files.copy(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -164,21 +160,20 @@ public class Engine {
         String source = getSourcePath();
         String dest = getDestPath();
         if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
-            dest+="\\MP3\\";
-        }
-        else
-            dest+="/mp3/";
+            dest += "\\MP3\\";
+        } else
+            dest += "/mp3/";
         File pathDest = new File(dest);
         if (!pathDest.exists()) {
             pathDest.mkdir();
         }
         File pathSource = new File(source);
         LinkedList<File> files = new LinkedList<File>();
-        for (File file : pathSource.listFiles()){
-            if (file.length()>20000)
+        for (File file : pathSource.listFiles()) {
+            if (file.length() > MIN_AUDIO_SIZE)
                 files.add(file);
         }
-        for(File file : files){
+        for (File file : files) {
 
             try {
                 BufferedReader fin = new BufferedReader(new FileReader(file));
@@ -187,19 +182,19 @@ public class Engine {
                     File newFile = new File(dest + file.getName() + ".mp3");
                     Files.copy(file.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         renameFile(pathDest.listFiles());
     }
-    private static void renameFile(File[] files){
 
-        for (File file : files){
-            String art="";
+    private static void renameFile(File[] files) {
+
+        for (File file : files) {
+            String art = "";
             String track = "";
-            try{
+            try {
                 AudioFile f = AudioFileIO.read(file);
                 Tag tag = f.getTag();
                 art = tag.getFirst(FieldKey.ARTIST);
@@ -215,7 +210,7 @@ public class Engine {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            file.renameTo(new File(file.getParent()+ "\\" + art + "-" + track + ".mp3"));
+            file.renameTo(new File(file.getParent() + "\\" + art + "-" + track + ".mp3"));
         }
 
     }
