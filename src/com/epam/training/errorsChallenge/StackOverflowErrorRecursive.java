@@ -1,3 +1,4 @@
+package com.epam.training.errorsChallenge;
 public class StackOverflowErrorRecursive {
 
     static void thrower() {
