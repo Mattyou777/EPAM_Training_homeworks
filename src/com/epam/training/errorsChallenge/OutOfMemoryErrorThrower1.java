@@ -1,3 +1,5 @@
+package com.epam.training.errorsChallenge;
+
 import java.util.ArrayList;
 import java.util.List;
 
