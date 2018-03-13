@@ -1,3 +1,4 @@
+package com.epam.training.errorsChallenge;
 import javassist.CannotCompileException;
 public class Metaspace {
 
