@@ -9,15 +9,20 @@ import java.util.Scanner;
 class Engine {
 
     static void lets() {
+        
+        final String DRIVER = "org.h2.Driver";
+        final String DATABASE = "jdbc:h2:~/test";
+        final String DATABASE_USER = "sa";
+        final String DATABASE_USER_PASSWORD = "";
 
         try {
-            Class.forName("org.h2.Driver");
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         try {
             System.out.println("Подключение к базе данных...");
-            Connection conn = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
+            Connection conn = DriverManager.getConnection(DATABASE, DATABASE_USER, DATABASE_USER_PASSWORD);
             Statement st = conn.createStatement();
             st.execute("CREATE TABLE IF NOT EXISTS books (ISBN BIGINT not NULL, addedDate DATE, author VARCHAR(255), title VARCHAR(255), PRIMARY KEY ( ISBN ))");
             ResultSet rs = st.executeQuery("SELECT * FROM books");
